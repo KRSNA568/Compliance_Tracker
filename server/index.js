@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const clientsRouter = require('./routes/clients');
 
 dotenv.config();
 
@@ -22,6 +23,8 @@ app.get('/api/health', (req, res) => {
 app.get('/api', (req, res) => {
   res.status(200).json({ message: 'Mini Compliance Tracker API' });
 });
+
+app.use('/api', clientsRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
