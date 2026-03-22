@@ -165,4 +165,41 @@ router.post('/clients/:id/tasks', async (req, res, next) => {
   }
 });
 
+router.put('/clients/:id', async (req, res, next) => {
+  try {
+    const supabase = getSupabaseClient();
+    if (!supabase) return res.status(500).json({ error: 'Database client not configured' });
+
+    const clientId = req.params.id;
+    const { company_name, country, entity_type } = req.body;
+    const updates = { company_name, country, entity_type };
+
+    const { data, error } = await supabase
+      .from('clients')
+      .update(updates)
+      .eq('id', clientId)
+      .select('*')
+      .single();
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(200).json(data);
+  } catch (error) { return next(error); }
+});
+
+router.delete('/clients/:id', async (req, res, next) => {
+  try {
+    const supabase = getSupabaseClient();
+    if (!supabase) return res.status(500).json({ error: 'Database client not configured' });
+
+    const clientId = req.params.id;
+    const { error } = await supabase
+      .from('clients')
+      .delete()
+      .eq('id', clientId);
+
+    if (error) return res.status(500).json({ error: error.message });
+    return res.status(204).send();
+  } catch (error) { return next(error); }
+});
+
 module.exports = router;

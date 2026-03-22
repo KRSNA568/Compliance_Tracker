@@ -15,8 +15,13 @@ api.interceptors.response.use(
 
 export const getClients = () => api.get('/clients');
 export const createClient = (payload) => api.post('/clients', payload);
+export const updateClient = (clientId, payload) => api.put(`/clients/${clientId}`, payload);
+export const deleteClient = (clientId) => api.delete(`/clients/${clientId}`);
+
 export const getTasks = (clientId, params) => api.get(`/clients/${clientId}/tasks`, { params });
 export const createTask = (clientId, payload) => api.post(`/clients/${clientId}/tasks`, payload);
+export const updateTask = (taskId, payload) => api.put(`/tasks/${taskId}`, payload);
 export const updateTaskStatus = (taskId, status) => api.patch(`/tasks/${taskId}/status`, { status });
+export const deleteTask = (taskId) => api.delete(`/tasks/${taskId}`);
 
 export default api;

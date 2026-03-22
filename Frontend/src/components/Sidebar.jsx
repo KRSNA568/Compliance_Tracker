@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Building2, Plus } from 'lucide-react';
+import { Building2, Plus, Edit2, Trash2 } from 'lucide-react';
 import AddClientModal from './AddClientModal';
+import EditClientModal from './EditClientModal';
 
-export default function Sidebar({ clients, selectedClient, onSelectClient, onAddClient }) {
+export default function Sidebar({ clients, selectedClient, onSelectClient, onAddClient, onEditClient, onDeleteClient, isOpen, onClose }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingClient, setEditingClient] = useState(null);
 
   return (
-    <aside className="w-72 bg-surface h-full flex flex-col pt-8 pb-4">
+    <aside className={`fixed lg:relative z-40 bg-surface h-full flex flex-col pt-8 pb-4 transition-transform duration-300 w-72 lg:translate-x-0 ${isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}`}>
       <div className="px-8 mb-8">
         <h1 className="text-xl font-heading font-extrabold text-on_surface tracking-tight">Compliance<span className="text-primary">Suite</span></h1>
         <p className="text-xs text-on_surface_variant tracking-widest uppercase mt-1">Executive Ledger</p>
@@ -16,10 +18,9 @@ export default function Sidebar({ clients, selectedClient, onSelectClient, onAdd
         {clients.map(client => {
           const isActive = selectedClient?.id === client.id;
           return (
-            <button
+            <div
               key={client.id}
-              onClick={() => onSelectClient(client)}
-              className={`w-full group relative flex items-center px-4 py-3 rounded-xl transition-all duration-200 text-left cursor-pointer
+              className={`group relative flex items-center px-4 py-3 rounded-xl transition-all duration-200 text-left
                 ${isActive 
                   ? 'bg-primary_fixed text-on_primary_fixed_variant' 
                   : 'text-on_surface_variant hover:bg-surface_container hover:text-on_surface'}`}
@@ -27,13 +28,22 @@ export default function Sidebar({ clients, selectedClient, onSelectClient, onAdd
               {isActive && (
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
               )}
-              <Building2 className={`w-5 h-5 mr-3 transition-colors ${isActive ? 'text-primary' : 'text-outline'}`} />
-              <div className="flex-1 min-w-0">
-                <p className={`text-sm font-medium truncate ${isActive ? 'font-semibold' : ''}`}>
+              <button onClick={() => onSelectClient(client)} className="flex-1 min-w-0 flex items-center cursor-pointer">
+                <Building2 className={`w-5 h-5 mr-3 transition-colors ${isActive ? 'text-primary' : 'text-outline'}`} />
+                <p className={`text-sm font-medium truncate pr-2 ${isActive ? 'font-semibold' : ''}`}>
                   {client.company_name}
                 </p>
+              </button>
+
+              <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <button onClick={() => setEditingClient(client)} className="p-1.5 text-on_surface_variant hover:text-primary hover:bg-primary/10 rounded-md transition-colors">
+                  <Edit2 className="w-3.5 h-3.5" />
+                </button>
+                <button onClick={() => onDeleteClient(client.id)} className="p-1.5 text-on_surface_variant hover:text-error hover:bg-error/10 rounded-md transition-colors ml-1">
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
               </div>
-            </button>
+            </div>
           );
         })}
       </nav>
@@ -59,6 +69,17 @@ export default function Sidebar({ clients, selectedClient, onSelectClient, onAdd
           onAddClient={async (payload) => {
             await onAddClient(payload);
             setIsModalOpen(false);
+          }}
+        />
+      )}
+
+      {editingClient && (
+        <EditClientModal 
+          client={editingClient}
+          onClose={() => setEditingClient(null)}
+          onEditClient={async (id, payload) => {
+            await onEditClient(id, payload);
+            setEditingClient(null);
           }}
         />
       )}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Filters from './Filters';
 import TaskCard from './TaskCard';
 import AddTaskModal from './AddTaskModal';
+import EditTaskModal from './EditTaskModal';
 import { PackageOpen } from 'lucide-react';
 
 export default function TaskBoard({
@@ -13,9 +14,12 @@ export default function TaskBoard({
   onStatusFilterChange,
   onCategoryFilterChange,
   onStatusChange,
-  onAddTask
+  onAddTask,
+  onEditTask,
+  onDeleteTask
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
 
   if (!client) {
     return (
@@ -73,6 +77,8 @@ export default function TaskBoard({
               key={task.id} 
               task={task} 
               onStatusChange={onStatusChange} 
+              onEdit={() => setEditingTask(task)}
+              onDelete={() => onDeleteTask(task.id)}
             />
           ))}
         </div>
@@ -84,6 +90,17 @@ export default function TaskBoard({
           onAddTask={(payload) => {
             onAddTask(payload);
             setIsModalOpen(false);
+          }}
+        />
+      )}
+
+      {editingTask && (
+        <EditTaskModal 
+          task={editingTask}
+          onClose={() => setEditingTask(null)}
+          onEditTask={async (id, payload) => {
+            await onEditTask(id, payload);
+            setEditingTask(null);
           }}
         />
       )}
