@@ -57,7 +57,7 @@ The v2 PRD keeps the core product scope from v1 (clients, tasks, add task, statu
 ### Gap 6 — Environment Templates
 - Commit:
   - `server/.env.example`
-  - `client/.env.example`
+  - `Frontend/.env.example`
 
 ### Gap 7 — Timezone-Safe Overdue
 - Implement UTC date boundary comparison utility.
@@ -84,7 +84,7 @@ The v2 PRD keeps the core product scope from v1 (clients, tasks, add task, statu
 ## 4) Engineering Implementation Plan (Execution Order)
 
 ## Phase A — Foundation (0.5 day)
-1. Monorepo structure validation (`client`, `server`, `supabase/migrations`).
+1. Monorepo structure validation (`Frontend`, `server`, `supabase/migrations`).
 2. Add `.env.example` templates.
 3. Install and configure backend dependencies including `cors`.
 

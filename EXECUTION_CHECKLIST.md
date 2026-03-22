@@ -1,9 +1,9 @@
 # Mini Compliance Tracker — Execution Checklist
 
 ## Phase A — Foundation
-- [ ] Create `client/` and `server/` structure (if missing)
+- [ ] Create `Frontend/` and `server/` structure (if missing)
 - [ ] Add `server/.env.example`
-- [ ] Add `client/.env.example`
+- [ ] Add `Frontend/.env.example`
 - [ ] Add/update `.gitignore` to exclude local env files
 - [ ] Install backend dependencies (`express`, `cors`, `@supabase/supabase-js`)
 - [ ] Confirm local boot for both frontend and backend

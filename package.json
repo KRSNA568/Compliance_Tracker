@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix Frontend\"",
     "dev:server": "npm run dev --prefix server",
-    "dev:client": "npm run dev --prefix client",
+    "dev:frontend": "npm run dev --prefix Frontend",
+    "dev:client": "npm run dev --prefix Frontend",
     "start": "npm run start --prefix server",
-    "build": "npm run build --prefix client"
+    "build": "npm run build --prefix Frontend"
   },
   "repository": {
     "type": "git",

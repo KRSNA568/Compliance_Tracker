@@ -3,6 +3,7 @@ node_modules/
 .env
 *.env.local
 client/dist/
+Frontend/dist/
 .DS_Store
 Mini_Compliance_Tracker_PRD.docx
 Mini_Compliance_Tracker_PRD_v2.docx
