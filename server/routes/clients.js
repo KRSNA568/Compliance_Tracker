@@ -1,5 +1,6 @@
 const express = require('express');
 const { getSupabaseClient } = require('../db/supabaseClient');
+const { validateCreateTaskPayload } = require('../middleware/validation');
 
 const router = express.Router();
 
@@ -71,6 +72,59 @@ router.get('/clients/:id/tasks', async (req, res, next) => {
     }
 
     return res.status(200).json(data ?? []);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.post('/clients/:id/tasks', async (req, res, next) => {
+  try {
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      return res.status(500).json({ error: 'Database client not configured' });
+    }
+
+    const validationError = validateCreateTaskPayload(req.body);
+    if (validationError) {
+      return res.status(400).json({ error: validationError });
+    }
+
+    const clientId = req.params.id;
+    const { data: client, error: clientError } = await supabase
+      .from('clients')
+      .select('id')
+      .eq('id', clientId)
+      .maybeSingle();
+
+    if (clientError) {
+      return res.status(500).json({ error: clientError.message });
+    }
+
+    if (!client) {
+      return res.status(404).json({ error: 'Client not found' });
+    }
+
+    const payload = {
+      client_id: clientId,
+      title: req.body.title.trim(),
+      category: req.body.category,
+      due_date: req.body.due_date,
+      priority: req.body.priority,
+      description: req.body.description ? req.body.description.trim() : null,
+      status: 'Pending'
+    };
+
+    const { data, error } = await supabase
+      .from('compliance_tasks')
+      .insert(payload)
+      .select('*')
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.status(201).json(data);
   } catch (error) {
     return next(error);
   }

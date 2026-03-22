@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const clientsRouter = require('./routes/clients');
+const tasksRouter = require('./routes/tasks');
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.get('/api', (req, res) => {
 });
 
 app.use('/api', clientsRouter);
+app.use('/api', tasksRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
