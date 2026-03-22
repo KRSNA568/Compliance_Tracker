@@ -5,6 +5,11 @@
 
 <br />
 
+
+## 📖 Description
+
+The **Mini Compliance Tracker** is a lightweight, high-performance executive dashboard crafted for financial and legal professionals to effortlessly monitor, organize, and prioritize their clients' regulatory responsibilities. Engineered with a dynamic timezone-safe processing engine and robust optimistic UI fail-safes, it guarantees that critical deadlines are never missed while delivering a remarkably frictionless and beautiful user experience.
+
 ## 🔗 Live Deployment
 
 **Deployed Application:** [https://minicompliancetracker.netlify.app/](https://minicompliancetracker.netlify.app/)
@@ -24,6 +29,7 @@ The **Mini Compliance Tracker** is thoughtfully designed around a scalable monor
 
 ## ⚡ Core Features
 
+* **Seed Data:** The database is seeded with sample data to get you started.
 * **Real-time Client Ledger:** Seamlessly create, edit, and delete clients and track their respective tasks without any manual page refreshes.
 * **Intelligent Dashboard:** Dynamic Task Board complete with `Status` drag-and-drop visuals, `Category` filtering algorithms, and robust animated loading skeleton states.
 * **Timezone-Safe Overdue Engine:** Strictly parses UTC midnight variations to guarantee precise highlights (red warning borders) on universally overdue tasks.
