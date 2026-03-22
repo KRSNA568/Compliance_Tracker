@@ -26,6 +26,41 @@ router.get('/clients', async (req, res, next) => {
   }
 });
 
+router.post('/clients', async (req, res, next) => {
+  try {
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      return res.status(500).json({ error: 'Database client not configured' });
+    }
+
+    const { company_name, country, entity_type } = req.body;
+    
+    if (!company_name?.trim() || !country?.trim() || !entity_type?.trim()) {
+      return res.status(400).json({ error: 'company_name, country, and entity_type are required fields.' });
+    }
+
+    const payload = {
+      company_name: company_name.trim(),
+      country: country.trim(),
+      entity_type: entity_type.trim()
+    };
+
+    const { data, error } = await supabase
+      .from('clients')
+      .insert(payload)
+      .select('*')
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.status(201).json(data);
+  } catch (error) {
+    return next(error);
+  }
+});
+
 router.get('/clients/:id/tasks', async (req, res, next) => {
   try {
     const supabase = getSupabaseClient();

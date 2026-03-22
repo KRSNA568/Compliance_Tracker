@@ -1,7 +1,10 @@
-import React from 'react';
-import { Building2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Building2, Plus } from 'lucide-react';
+import AddClientModal from './AddClientModal';
 
-export default function Sidebar({ clients, selectedClient, onSelectClient }) {
+export default function Sidebar({ clients, selectedClient, onSelectClient, onAddClient }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <aside className="w-72 bg-surface h-full flex flex-col pt-8 pb-4">
       <div className="px-8 mb-8">
@@ -35,13 +38,30 @@ export default function Sidebar({ clients, selectedClient, onSelectClient }) {
         })}
       </nav>
 
-      <div className="px-8 mt-auto pt-6 border-t border-surface_container_high">
+      <div className="px-8 mt-auto pt-6 border-t border-surface_container_high space-y-4">
+        <button 
+          onClick={() => setIsModalOpen(true)}
+          className="w-full flex items-center justify-center px-4 py-2 border border-outline_variant/40 hover:border-primary/50 text-primary font-semibold rounded-xl text-sm transition-colors bg-surface_container_lowest shadow-sm"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Add Client
+        </button>
         <p className="text-xs text-outline space-x-1">
           <span>v2.4.0</span>
           <span>•</span>
           <span>System Active</span>
         </p>
       </div>
+
+      {isModalOpen && (
+        <AddClientModal 
+          onClose={() => setIsModalOpen(false)}
+          onAddClient={async (payload) => {
+            await onAddClient(payload);
+            setIsModalOpen(false);
+          }}
+        />
+      )}
     </aside>
   );
 }

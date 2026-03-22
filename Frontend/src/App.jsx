@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getClients, getTasks, createTask, updateTaskStatus } from './api';
+import { getClients, getTasks, createTask, updateTaskStatus, createClient } from './api';
 import Sidebar from './components/Sidebar';
 import TaskBoard from './components/TaskBoard';
 
@@ -64,6 +64,12 @@ function App() {
     }
   };
 
+  const handleAddClient = async (payload) => {
+    const newClient = await createClient(payload);
+    setClients(prev => [...prev, newClient].sort((a, b) => a.company_name.localeCompare(b.company_name)));
+    setSelectedClient(newClient);
+  };
+
   const handleAddTask = async (payload) => {
     const newTask = await createTask(selectedClient.id, payload);
     setTasks([...tasks, newTask]);
@@ -85,7 +91,8 @@ function App() {
       <Sidebar 
         clients={clients} 
         selectedClient={selectedClient} 
-        onSelectClient={setSelectedClient} 
+        onSelectClient={setSelectedClient}
+        onAddClient={handleAddClient}
       />
       
       <main className="flex-1 flex flex-col overflow-hidden bg-surface_container_low rounded-tl-2xl shadow-[-10px_0_40px_rgba(19,27,46,0.03)] border-l border-white/50">

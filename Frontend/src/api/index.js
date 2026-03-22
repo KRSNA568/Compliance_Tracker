@@ -14,6 +14,7 @@ api.interceptors.response.use(
 );
 
 export const getClients = () => api.get('/clients');
+export const createClient = (payload) => api.post('/clients', payload);
 export const getTasks = (clientId, params) => api.get(`/clients/${clientId}/tasks`, { params });
 export const createTask = (clientId, payload) => api.post(`/clients/${clientId}/tasks`, payload);
 export const updateTaskStatus = (taskId, status) => api.patch(`/tasks/${taskId}/status`, { status });
