@@ -32,6 +32,10 @@ app.use('/api', tasksRouter);
 app.use('/api/*splat', notFoundHandler);
 app.use(globalErrorHandler);
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
+
+module.exports = app;
