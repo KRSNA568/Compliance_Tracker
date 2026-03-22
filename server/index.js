@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const clientsRouter = require('./routes/clients');
 const tasksRouter = require('./routes/tasks');
+const { notFoundHandler, globalErrorHandler } = require('./middleware/errorHandlers');
 
 dotenv.config();
 
@@ -27,6 +28,9 @@ app.get('/api', (req, res) => {
 
 app.use('/api', clientsRouter);
 app.use('/api', tasksRouter);
+
+app.use('/api/*splat', notFoundHandler);
+app.use(globalErrorHandler);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
